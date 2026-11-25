@@ -1,27 +1,52 @@
 package pages;
 
+import base.BaseClass;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class LoginPage {
-    private WebDriver driver;
-    private By userNameField = By.id("user-name");
-    private By passwordField = By.id("password");
-    private By loginButton = By.id("login-button");
+public class LoginPage extends BaseClass {
 
-    public LoginPage(WebDriver driver){
-        this.driver = driver;
+    private final By usernameField = By.id("user-name");
+    private final By passwordField = By.id("password");
+    private final By loginButton = By.id("login-button");
+    private final By errorMessage = By.cssSelector("[data-test='error']");
+
+    public LoginPage(WebDriver driver) {
+        super(driver);
     }
 
-    public void enterUserName(String userName){
-        driver.findElement(userNameField).sendKeys(userName);
+    public boolean isLoginPageDisplayed() {
+        return isDisplayed(usernameField)
+                && isDisplayed(passwordField)
+                && isDisplayed(loginButton);
     }
 
-    public void enterPassword(String password){
-        driver.findElement(passwordField).sendKeys(password);
+    public void enterUsername(String username) {
+        type(usernameField, username);
+        sleep(1000);
     }
 
-    public  void clickLoginButton() {
-        driver.findElement(loginButton).click();
+    public void enterPassword(String password) {
+        type(passwordField, password);
+        sleep(1000);
+    }
+
+    public void clickLogin() {
+        click(loginButton);
+        sleep(1000);
+    }
+
+    public void login(String username, String password) {
+        enterUsername(username);
+        enterPassword(password);
+        clickLogin();
+    }
+
+    public boolean isErrorMessageDisplayed() {
+        return isDisplayed(errorMessage);
+    }
+
+    public String getErrorMessage() {
+        return getText(errorMessage);
     }
 }
